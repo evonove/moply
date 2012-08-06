@@ -26,7 +26,6 @@ GLDrawer::GLDrawer(QWidget *parent, QGLFormat *format) :
 GLDrawer::~GLDrawer()
 {
     delete embPymol;
-//    delete timer;
 }
 
 QSize GLDrawer::minimumSizeHint() const

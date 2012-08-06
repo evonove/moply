@@ -20,49 +20,27 @@
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QTextEdit" name="script">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="btnHLayout">
-        <item>
-         <widget class="QPushButton" name="launchPymolButton">
-          <property name="text">
-           <string>Launch PyMOL</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="startTaskButton">
-          <property name="layoutDirection">
-           <enum>Qt::RightToLeft</enum>
-          </property>
-          <property name="text">
-           <string>Execute Code</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QTextEdit" name="results">
-        <property name="font">
-         <font>
-          <family>Ubuntu Mono</family>
-         </font>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QPushButton" name="loadFile">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <kerning>true</kerning>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>Load File</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
