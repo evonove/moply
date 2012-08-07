@@ -70,25 +70,25 @@ void EmbPymol::button(int button, int state, int x, int y, int modifiers)
     Py_DECREF(args);
 }
 
-void EmbPymol::cmdSet(string command, int arg)
+void EmbPymol::cmdSet(string *command, int arg)
 {
-    PyObject *args = Py_BuildValue("si", command.c_str(), arg);
+    PyObject *args = Py_BuildValue("si", command->c_str(), arg);
     callFunction(Cmd, "set", args);
 
     Py_DECREF(args);
 }
 
-void EmbPymol::cmdButton(string command, string arg1, string arg2)
+void EmbPymol::cmdButton(string *command, string *arg1, string *arg2)
 {
-    PyObject *args = Py_BuildValue("sss", command.c_str(), arg1.c_str(), arg2.c_str());
+    PyObject *args = Py_BuildValue("sss", command->c_str(), arg1->c_str(), arg2->c_str());
     callFunction(Cmd, "button", args);
 
     Py_DECREF(args);
 }
 
-void EmbPymol::cmdLoad(string fname)
+void EmbPymol::cmdLoad(string *fname)
 {
-    PyObject *args = Py_BuildValue("(s)", fname.c_str());
+    PyObject *args = Py_BuildValue("(s)", fname->c_str());
     callFunction(Cmd, "load", args);
 
     Py_XDECREF(args);

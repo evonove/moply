@@ -1,5 +1,7 @@
 #include "moply/gldrawer.h"
 
+using namespace std;
+
 GLDrawer::GLDrawer(QWidget *parent, QGLFormat *format) :
     QGLWidget(*format, parent)
 {
@@ -15,10 +17,11 @@ GLDrawer::GLDrawer(QWidget *parent, QGLFormat *format) :
     _pymolProcess();
 
     // set no external gui
-    embPymol->cmdSet("internal_gui", 0);
-    embPymol->cmdSet("internal_feedback", 0);
-    embPymol->cmdButton("double_left", "None", "None");
-    embPymol->cmdButton("single_right", "None", "None");
+
+    embPymol->cmdSet(new string("internal_gui"), 0);
+    embPymol->cmdSet(new string("internal_feedback"), 0);
+    embPymol->cmdButton(new string("double_left"), new string("None"),new string("None"));
+    embPymol->cmdButton(new string("single_right"), new string("None"), new string("None"));
 
     resizeGL(width(), height());
 }
@@ -64,8 +67,8 @@ void GLDrawer::mouseMoveEvent(QMouseEvent *event)
 
 void GLDrawer::mousePressEvent(QMouseEvent *event)
 {
-    embPymol->cmdButton("double_left", "None", "None");
-    embPymol->cmdButton("single_right", "None", "None");
+    embPymol->cmdButton(new string("double_left"), new string("None"),new string("None"));
+    embPymol->cmdButton(new string("single_right"), new string("None"), new string("None"));
 
     embPymol->button(_buttonMap[event->button()], 0, event->x(), height() - event->y(), 0);
     _pymolProcess();
@@ -78,7 +81,7 @@ void GLDrawer::mouseReleaseEvent(QMouseEvent *event)
 }
 
 // file loading
-void GLDrawer::loadFile(std::string fname)
+void GLDrawer::loadFile(std::string *fname)
 {
     // trying to load a file
     embPymol->cmdLoad(fname);

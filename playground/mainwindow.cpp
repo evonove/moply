@@ -1,6 +1,8 @@
 #include "moply/gldrawer.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
+#include <QDebug>
 
 using namespace std;
 
@@ -10,6 +12,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    loadAction = new QAction(tr("&Load"), this);
+    connect(loadAction, SIGNAL(triggered()), this, SLOT(load()));
+
+    // add menu action
+    fileMenu = ui->menuBar->addMenu(tr("&File"));
+    fileMenu->addAction(loadAction);
+
     // set up QGLFormat
     QGLFormat *f = new QGLFormat();
     f->setStencil(true);
@@ -17,16 +26,23 @@ MainWindow::MainWindow(QWidget *parent) :
     f->setDepth(true);
     f->setDoubleBuffer(true);
 
-    GLDrawer *w = new GLDrawer(this, f);
-    ui->verticalLayout->insertWidget(0, w, 1, 0);
-//    w->loadFile("/home/syn/Scrivania/9LDT-a.pdb");
+    drawer = new GLDrawer(this, f);
+    ui->verticalLayout->insertWidget(0, drawer, 1, 0);
 
-//    GLDrawer *h = new GLDrawer(this, f);
-//    ui->horizontalLayout->addWidget(h, 1, 0);
-//    h->loadFile("/home/syn/Scrivania/1GOL.pdb");
+    connect(ui->loadFile, SIGNAL(clicked()), this, SLOT(load()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::load()
+{
+    QString fname = QFileDialog::getOpenFileName(this, tr("Open file"), "", tr("Mol Files (*.pdb);;All Files (*)"));
+    if (fname != "") {
+        string _fname = fname.toUtf8().constData();
+        drawer->loadFile(&_fname);
+    }
+    qDebug() << "load action triggered";
 }

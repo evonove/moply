@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <moply/gldrawer.h>
 
 namespace Ui {
 class MainWindow;
@@ -16,9 +17,13 @@ public:
     ~MainWindow();
 
 public slots:
+    void load();
     
 private:
     Ui::MainWindow *ui;
+    GLDrawer *drawer;
+    QAction *loadAction;
+    QMenu *fileMenu;
 };
 
 #endif // MAINWINDOW_H
