@@ -1,8 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <moply/gldrawer.h>
+#include <QMainWindow>
+#include <QSignalMapper>
 
 namespace Ui {
 class MainWindow;
@@ -18,12 +19,14 @@ public:
 
 public slots:
     void load();
+    void render(QString str);
     
 private:
     Ui::MainWindow *ui;
     GLDrawer *drawer;
     QAction *loadAction;
     QMenu *fileMenu;
+    QSignalMapper *signalMapper;
 };
 
 #endif // MAINWINDOW_H

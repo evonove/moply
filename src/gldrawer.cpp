@@ -1,8 +1,9 @@
 #include "moply/gldrawer.h"
+#include "moply/embpymol.h"
 
 using namespace std;
 
-GLDrawer::GLDrawer(QWidget *parent, QGLFormat *format) :
+GLDrawer::GLDrawer(QWidget *parent, QGLFormat *format, int finalize) :
     QGLWidget(*format, parent)
 {
     _buttonMap[Qt::LeftButton] = 0;
@@ -10,18 +11,21 @@ GLDrawer::GLDrawer(QWidget *parent, QGLFormat *format) :
     _buttonMap[Qt::RightButton] = 2;
 
     /* init pymol2 in python embedded */
-    embPymol = new EmbPymol();
+    embPymol = new EmbPymol(finalize);
     glInit();
 
     embPymol->start();
     _pymolProcess();
 
     // set no external gui
+//    embPymol->cmdSet(new string("internal_gui"), 0);
+//    embPymol->cmdSet(new string("internal_feedback"), 0);
 
-    embPymol->cmdSet(new string("internal_gui"), 0);
-    embPymol->cmdSet(new string("internal_feedback"), 0);
-    embPymol->cmdButton(new string("double_left"), new string("None"),new string("None"));
-    embPymol->cmdButton(new string("single_right"), new string("None"), new string("None"));
+    string c1 = "double_left";
+    string c2 = "single_right";
+    string x = "None";
+    embPymol->cmdButton(&c1, &x, &x);
+    embPymol->cmdButton(&c2, &x, &x);
 
     resizeGL(width(), height());
 }
@@ -67,8 +71,11 @@ void GLDrawer::mouseMoveEvent(QMouseEvent *event)
 
 void GLDrawer::mousePressEvent(QMouseEvent *event)
 {
-    embPymol->cmdButton(new string("double_left"), new string("None"),new string("None"));
-    embPymol->cmdButton(new string("single_right"), new string("None"), new string("None"));
+    string c1 = "double_left";
+    string c2 = "single_right";
+    string x = "None";
+    embPymol->cmdButton(&c1, &x, &x);
+    embPymol->cmdButton(&c2, &x, &x);
 
     embPymol->button(_buttonMap[event->button()], 0, event->x(), height() - event->y(), 0);
     _pymolProcess();
@@ -83,9 +90,17 @@ void GLDrawer::mouseReleaseEvent(QMouseEvent *event)
 // file loading
 void GLDrawer::loadFile(std::string *fname)
 {
+    embPymol->cmdReinit();
+
     // trying to load a file
     embPymol->cmdLoad(fname);
     embPymol->reshape(width(), height(), 0);
+}
+
+void GLDrawer::render(bool enable, string type)
+{
+    embPymol->cmdRendering(enable, &type);
+    _pymolProcess();
 }
 
 // pymol specific methods

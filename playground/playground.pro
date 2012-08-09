@@ -9,6 +9,8 @@ DESTDIR = ../bin
 
 INCLUDEPATH += ../include
 unix:INCLUDEPATH += /usr/include/python2.7
+
+LIBS += -lmoply
 unix:!macx:!symbian: LIBS += -lpython2.7
 
 QT       += core gui opengl
@@ -32,4 +34,3 @@ PRE_TARGETDEPS += ../lib/libmoply.a
 
 QMAKE_LIBDIR += ../lib
 
-LIBS += -lmoply

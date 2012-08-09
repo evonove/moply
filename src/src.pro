@@ -12,7 +12,7 @@ CONFIG += debug
 INCLUDEPATH += ../include
 
 HEADERS += ../include/moply/embpymol.h \
-           ../include/moply/gldrawer.h
+    ../include/moply/gldrawer.h
 
 SOURCES += embpymol.cpp \
            gldrawer.cpp

@@ -3,8 +3,13 @@
 
 using namespace std;
 
-EmbPymol::EmbPymol()
+EmbPymol::EmbPymol(int finalize)
 {
+    // This Finalize the python interpreter on class destruction
+    this->finalize = finalize;
+
+    EmbPymol::lazyPyInit();
+
     // add custom pymol path to sys.path
     PyObject* sys = PyImport_ImportModule("sys");
     PyObject* path = PyObject_GetAttrString(sys, "path");
@@ -23,6 +28,8 @@ EmbPymol::~EmbPymol()
 {
     Py_XDECREF(PyMOL);
     Py_XDECREF(Cmd);
+
+    if (finalize) EmbPymol::lazyPyFinal();
 }
 
 /* pymol call wrappers */
@@ -94,6 +101,22 @@ void EmbPymol::cmdLoad(string *fname)
     Py_XDECREF(args);
 }
 
+void EmbPymol::cmdReinit()
+{
+    callFunction(Cmd, "reinitialize");
+}
+
+// rendering options
+void EmbPymol::cmdRendering(bool enable, string *name)
+{
+    string command = (enable) ? "show" : "hide";
+
+    PyObject *args = Py_BuildValue("(s)", name->c_str());
+    callFunction(Cmd, command.c_str(), args);
+
+    Py_XDECREF(args);
+}
+
 PyObject* EmbPymol::callFunction(PyObject* pObj, const char *funcName, PyObject *args)
 {
     // pObj and args are borrowed references
@@ -115,12 +138,14 @@ PyObject* EmbPymol::callFunction(PyObject* pObj, const char *funcName, PyObject 
 /* init functions */
 void EmbPymol::initPymol()
 {
-    string pymol2("pymol2");
+    string pymol2 = "pymol2";
     PyObject *pModule = loadModule(&pymol2);
 
     if (pModule != NULL) {
+        PyObject *args = Py_BuildValue("(s)", "presentation");
+
         string className = "PyMOL";
-        PyMOL = instantiateClass(&className, pModule); // borrowing a reference to pModule
+        PyMOL = instantiateClass(&className, pModule, args); // borrowing a reference to pModule
         /* error check for missing PyMOL omitted */
 
         Cmd = PyObject_GetAttrString(PyMOL, "cmd");
@@ -129,13 +154,13 @@ void EmbPymol::initPymol()
     }
 }
 
-PyObject *EmbPymol::instantiateClass(string *className, PyObject *pModule)
+PyObject *EmbPymol::instantiateClass(string *className, PyObject *pModule, PyObject *args)
 {
     PyObject *pClass, *pObj;
 
     pClass = PyObject_GetAttrString(pModule, className->c_str());
     if (pClass && PyClass_Check(pClass)) {
-        pObj = PyInstance_New(pClass, NULL, NULL);
+        pObj = PyInstance_New(pClass, args, NULL);
 
         Py_DECREF(pClass);
 
@@ -182,5 +207,17 @@ char* EmbPymol::strPyObject(PyObject *pyObj)
     }
 
     return s;
+}
+
+void EmbPymol::lazyPyInit()
+{
+    if (!Py_IsInitialized())
+        Py_Initialize();
+}
+
+void EmbPymol::lazyPyFinal()
+{
+    if (Py_IsInitialized())
+        Py_Finalize();
 }
 
