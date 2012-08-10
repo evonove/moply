@@ -95,6 +95,8 @@ void MainWindow::load()
         drawer->loadFile(&_fname);
     }
     qDebug() << "load action triggered";
+
+    ui->avgP->setChecked(true);
 }
 
 void MainWindow::render(QString str)
