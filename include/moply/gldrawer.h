@@ -16,12 +16,16 @@ public:
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
 
+    static QString getPymolFileSelector();
+
 signals:
     
 public slots:
     void _pymolProcess();
     void loadFile(std::string *fname);
     void render(bool enable, std::string type);
+    void sequence(bool show);
+    void quality(int level);
 
 protected:
     void initializeGL();

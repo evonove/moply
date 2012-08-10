@@ -85,6 +85,14 @@ void EmbPymol::cmdSet(string *command, int arg)
     Py_DECREF(args);
 }
 
+void EmbPymol::cmdDo(string *command)
+{
+    PyObject *args = Py_BuildValue("(s)", command->c_str());
+    callFunction(Cmd, "do", args);
+
+    Py_DECREF(args);
+}
+
 void EmbPymol::cmdButton(string *command, string *arg1, string *arg2)
 {
     PyObject *args = Py_BuildValue("sss", command->c_str(), arg1->c_str(), arg2->c_str());

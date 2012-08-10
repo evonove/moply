@@ -18,9 +18,6 @@ GLDrawer::GLDrawer(QWidget *parent, QGLFormat *format, int finalize) :
     _pymolProcess();
 
     // set no external gui
-//    embPymol->cmdSet(new string("internal_gui"), 0);
-//    embPymol->cmdSet(new string("internal_feedback"), 0);
-
     string c1 = "double_left";
     string c2 = "single_right";
     string x = "None";
@@ -100,6 +97,22 @@ void GLDrawer::loadFile(std::string *fname)
 void GLDrawer::render(bool enable, string type)
 {
     embPymol->cmdRendering(enable, &type);
+    _pymolProcess();
+}
+
+void GLDrawer::sequence(bool show)
+{
+    string cmd = "seq_view";
+    embPymol->cmdSet(&cmd, show);
+    _pymolProcess();
+}
+
+void GLDrawer::quality(int level)
+{
+    QString qs = "_ util.performance(%1)";
+
+    string cmd = qs.arg(level).toStdString();
+    embPymol->cmdDo(&cmd);
     _pymolProcess();
 }
 

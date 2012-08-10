@@ -22,6 +22,7 @@ public:
     void button(int button, int state, int x, int y, int modifiers);
 
     void cmdSet(std::string *command, int arg);
+    void cmdDo(std::string *command);
     void cmdButton(std::string *command, std::string *arg1, std::string *arg2);
     void cmdLoad(std::string *fname);
     void cmdReinit();

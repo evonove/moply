@@ -55,6 +55,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->sticksBox, SIGNAL(toggled(bool)), signalMapper, SLOT(map()));
 
     connect(signalMapper, SIGNAL(mapped(QString)), this, SLOT(render(QString)));
+
+    // sequence selector
+    connect(ui->showSeqBox, SIGNAL(toggled(bool)), drawer, SLOT(sequence(bool)));
+
+    // quality selector
+    connect(ui->qualitySlider, SIGNAL(valueChanged(int)), drawer, SLOT(quality(int)));
 }
 
 MainWindow::~MainWindow()
