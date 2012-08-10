@@ -39,7 +39,7 @@ QSize GLDrawer::minimumSizeHint() const
 
 QSize GLDrawer::sizeHint() const
 {
-    return QSize(400, 400);
+    return QSize(4000, 4000);
 }
 
 void GLDrawer::initializeGL()

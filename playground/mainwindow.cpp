@@ -28,11 +28,16 @@ MainWindow::MainWindow(QWidget *parent) :
     f->setDepth(true);
     f->setDoubleBuffer(true);
 
-    drawer = new GLDrawer(this, f);
+    drawer = new GLDrawer(ui->GLPlaceholder, f);
     drawer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    ui->horizontalLayout->insertWidget(0, drawer, 1, 0);
+    QVBoxLayout * l = new QVBoxLayout(ui->GLPlaceholder);
+    l->setMargin(0);
+    l->setSpacing(0);
+    l->addWidget(drawer);
 
-    connect(ui->loadFile, SIGNAL(clicked()), this, SLOT(load()));
+    //ui->horizontalLayout->insertWidget(0, drawer, 1, 0);
+
+    //connect(ui->loadFile, SIGNAL(clicked()), this, SLOT(load()));
 
     signalMapper = new QSignalMapper(this);
 
