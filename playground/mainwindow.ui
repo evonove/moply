@@ -148,16 +148,16 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
                <item>
-                <widget class="QRadioButton" name="avgP">
+                <widget class="QRadioButton" name="maxP">
                  <property name="text">
-                  <string>Average Performance</string>
+                  <string>Max Performance</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QRadioButton" name="maxP">
+                <widget class="QRadioButton" name="avgP">
                  <property name="text">
-                  <string>Max Performance</string>
+                  <string>Average Performance</string>
                  </property>
                 </widget>
                </item>
@@ -238,7 +238,7 @@
      <x>0</x>
      <y>0</y>
      <width>777</width>
-     <height>29</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
