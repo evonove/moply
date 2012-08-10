@@ -109,10 +109,7 @@ void GLDrawer::sequence(bool show)
 
 void GLDrawer::quality(int level)
 {
-    QString qs = "_ util.performance(%1)";
-
-    string cmd = qs.arg(level).toStdString();
-    embPymol->cmdDo(&cmd);
+    embPymol->performance(level);
     _pymolProcess();
 }
 

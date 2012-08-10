@@ -60,7 +60,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->showSeqBox, SIGNAL(toggled(bool)), drawer, SLOT(sequence(bool)));
 
     // quality selector
-    connect(ui->qualitySlider, SIGNAL(valueChanged(int)), drawer, SLOT(quality(int)));
+    QSignalMapper *qualityMapper = new QSignalMapper(this);
+    qualityMapper->setMapping(ui->maxP, 100);
+    qualityMapper->setMapping(ui->avgP, 66);
+    qualityMapper->setMapping(ui->avgQ, 33);
+    qualityMapper->setMapping(ui->maxQ, 0);
+
+    connect(ui->maxP, SIGNAL(toggled(bool)), qualityMapper, SLOT(map()));
+    connect(ui->avgP, SIGNAL(toggled(bool)), qualityMapper, SLOT(map()));
+    connect(ui->avgQ, SIGNAL(toggled(bool)), qualityMapper, SLOT(map()));
+    connect(ui->maxQ, SIGNAL(toggled(bool)), qualityMapper, SLOT(map()));
+
+    connect(qualityMapper, SIGNAL(mapped(int)), drawer, SLOT(quality(int)));
 }
 
 MainWindow::~MainWindow()

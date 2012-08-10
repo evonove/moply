@@ -85,14 +85,6 @@ void EmbPymol::cmdSet(string *command, int arg)
     Py_DECREF(args);
 }
 
-void EmbPymol::cmdDo(string *command)
-{
-    PyObject *args = Py_BuildValue("(s)", command->c_str());
-    callFunction(Cmd, "do", args);
-
-    Py_DECREF(args);
-}
-
 void EmbPymol::cmdButton(string *command, string *arg1, string *arg2)
 {
     PyObject *args = Py_BuildValue("sss", command->c_str(), arg1->c_str(), arg2->c_str());
@@ -112,6 +104,24 @@ void EmbPymol::cmdLoad(string *fname)
 void EmbPymol::cmdReinit()
 {
     callFunction(Cmd, "reinitialize");
+}
+
+// utils
+void EmbPymol::performance(int level)
+{
+    // TODO: optimize this method calling module import on constructor and save it
+    PyObject *pName = PyString_FromString("pymol.util");
+    PyObject *pModule = PyImport_Import(pName);
+
+    if (pModule) {
+        PyObject *args = Py_BuildValue("iO", level, Cmd);
+        callFunction(pModule, "performance", args);
+
+        Py_DECREF(args);
+        Py_DECREF(pModule);
+    }
+
+    Py_DECREF(pName);
 }
 
 // rendering options
